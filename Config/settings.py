@@ -1,0 +1,5 @@
+class Settings:
+
+    DEFAULT_TIMEOUT = 10
+    DEFAULT_RETRIES = 3
+    RETRY_DELAY = 0.5

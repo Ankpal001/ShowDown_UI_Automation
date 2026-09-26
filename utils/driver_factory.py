@@ -1,0 +1,43 @@
+from selenium import webdriver
+
+
+class DriverFactory:
+
+    @staticmethod
+    def create_driver(browser, headless=False):
+
+        browser = browser.lower()
+
+        if browser == "chrome":
+            options = webdriver.ChromeOptions()
+            options.add_argument("--start-maximized")
+            options.add_argument("--disable-notifications")
+
+            if headless:
+                options.add_argument("--headless")
+
+            driver = webdriver.Chrome(options=options)
+
+        elif browser == "firefox":
+            options = webdriver.FirefoxOptions()
+            options.add_argument("--start-maximized")
+
+            if headless:
+                options.add_argument("--headless")
+
+            driver = webdriver.Firefox(options=options)
+
+        elif browser == "edge":
+            options = webdriver.EdgeOptions()
+            options.add_argument("--start-maximized")
+            options.add_argument("--disable-notifications")
+
+            if headless:
+                options.add_argument("--headless")
+
+            driver = webdriver.Edge(options=options)
+
+        else:
+            raise ValueError(f"Unsupported browser: {browser}")
+
+        return driver
