@@ -19,7 +19,6 @@ pipeline {
         stage('Run Tests') {
             steps {
                 bat 'pytest -v -s --browser chrome --headless'
-'
             }
         }
     }
