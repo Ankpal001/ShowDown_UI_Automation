@@ -18,7 +18,8 @@ pipeline {
 
         stage('Run Tests') {
             steps {
-                bat 'pytest --collect-only -q'
+                bat 'pytest -v -s --browser chrome --headless'
+'
             }
         }
     }
