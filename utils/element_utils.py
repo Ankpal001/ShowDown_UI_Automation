@@ -1,5 +1,4 @@
-from utils.retry_utils_learn import RetryUtils
-
+from utils.retry_utils import RetryUtils
 
 class ElementUtils:
 

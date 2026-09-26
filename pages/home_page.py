@@ -1,7 +1,6 @@
 from selenium.webdriver.common.by import By
 from pages.base_page import BasePage
-from pages.Components.header import HeaderComponent
-
+from pages.components.header import HeaderComponent
 
 class HomePage(BasePage):
 
