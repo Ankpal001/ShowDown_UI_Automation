@@ -16,8 +16,14 @@ pipeline {
 
         stage('Run Tests') {
             steps {
-                bat 'pytest -v -s --browser chrome --headless'
+                bat 'pytest -v -s --browser chrome --headless --alluredir=allure-results'
             }
         }
     }
+    post {
+    always {
+        archiveArtifacts artifacts: 'screenshots/**/*', allowEmptyArchive: true
+        archiveArtifacts artifacts: 'allure-results/**/*', allowEmptyArchive: true
+    }
+  }
 }
