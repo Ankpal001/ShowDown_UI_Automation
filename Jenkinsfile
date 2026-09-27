@@ -2,13 +2,11 @@ pipeline {
 
     agent any
 
-    stages {
+    environment {
+        TEST_PASSWORD = credentials('TEST_PASSWORD')
+    }
 
-        stage('Checkout') {
-            steps {
-                echo 'Checkout stage'
-            }
-        }
+    stages {
 
         stage('Install Dependencies') {
             steps {
