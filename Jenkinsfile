@@ -20,10 +20,14 @@ pipeline {
             }
         }
     }
+
     post {
-    always {
-        archiveArtifacts artifacts: 'screenshots/**/*', allowEmptyArchive: true
-        archiveArtifacts artifacts: 'allure-results/**/*', allowEmptyArchive: true
+        always {
+            allure([
+                results: [[path: 'allure-results']]
+            ])
+
+            archiveArtifacts artifacts: 'screenshots/**/*', allowEmptyArchive: true
+        }
     }
-  }
 }
