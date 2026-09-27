@@ -8,26 +8,22 @@ pipeline {
 
     stages {
 
-        stage('Install Dependencies') {
+        stage('Check Docker') {
             steps {
-                bat 'python -m pip install -r requirements.txt'
+                bat '''
+                    docker --version
+                    docker compose version
+                '''
             }
         }
 
-        stage('Run Tests') {
+        stage('Build & Run Tests') {
             steps {
-                bat 'pytest -v -s --browser chrome --headless --alluredir=allure-results'
+                bat '''
+                    docker compose down --remove-orphans
+                    docker compose up --build --abort-on-container-exit --exit-code-from test-runner
+                '''
             }
-        }
-    }
-
-    post {
-        always {
-            allure([
-                results: [[path: 'allure-results']]
-            ])
-
-            archiveArtifacts artifacts: 'screenshots/**/*', allowEmptyArchive: true
         }
     }
 }
