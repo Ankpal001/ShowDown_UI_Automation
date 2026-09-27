@@ -17,15 +17,31 @@ pipeline {
             }
         }
 
-        stage('Check Workspace') {
-    steps {
-        bat '''
-            echo ===== WORKSPACE =====
-            dir
-            echo ===== DOCKER COMPOSE FILE =====
-            dir docker-compose.yml
-        '''
+        stage('Build & Run Tests') {
+            steps {
+                bat '''
+                    docker compose down --remove-orphans
+                    docker compose up --build --abort-on-container-exit --exit-code-from test-runner
+                '''
+            }
+        }
     }
-}
+
+    post {
+        always {
+
+            allure([
+                results: [[path: 'allure-results']]
+            ])
+
+            archiveArtifacts(
+                artifacts: 'screenshots/**/*',
+                allowEmptyArchive: true
+            )
+
+            bat '''
+                docker compose down --remove-orphans
+            '''
+        }
     }
 }
