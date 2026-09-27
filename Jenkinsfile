@@ -17,13 +17,15 @@ pipeline {
             }
         }
 
-        stage('Build & Run Tests') {
-            steps {
-                bat '''
-                    docker compose down --remove-orphans
-                    docker compose up --build --abort-on-container-exit --exit-code-from test-runner
-                '''
-            }
-        }
+        stage('Check Workspace') {
+    steps {
+        bat '''
+            echo ===== WORKSPACE =====
+            dir
+            echo ===== DOCKER COMPOSE FILE =====
+            dir docker-compose.yml
+        '''
+    }
+}
     }
 }

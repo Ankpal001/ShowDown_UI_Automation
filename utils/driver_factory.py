@@ -1,3 +1,4 @@
+import os
 from selenium import webdriver
 
 
@@ -7,6 +8,28 @@ class DriverFactory:
     def create_driver(browser, headless=False):
 
         browser = browser.lower()
+
+        selenium_url = os.getenv("SELENIUM_URL")
+
+        if selenium_url:
+
+            if browser == "chrome":
+                options = webdriver.ChromeOptions()
+                options.add_argument("--disable-notifications")
+
+                if headless:
+                    options.add_argument("--headless")
+
+                return webdriver.Remote(
+                    command_executor=selenium_url,
+                    options=options
+                )
+
+            raise ValueError(
+                f"Remote execution currently supports: chrome. Got: {browser}"
+            )
+
+        # Local execution
 
         if browser == "chrome":
             options = webdriver.ChromeOptions()
