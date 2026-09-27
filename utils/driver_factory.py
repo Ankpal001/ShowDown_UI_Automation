@@ -11,9 +11,14 @@ class DriverFactory:
 
         selenium_url = os.getenv("SELENIUM_URL")
 
+        # =========================
+        # Remote / Selenium Grid
+        # =========================
+
         if selenium_url:
 
             if browser == "chrome":
+
                 options = webdriver.ChromeOptions()
                 options.add_argument("--disable-notifications")
 
@@ -25,13 +30,42 @@ class DriverFactory:
                     options=options
                 )
 
-            raise ValueError(
-                f"Remote execution currently supports: chrome. Got: {browser}"
-            )
+            elif browser == "firefox":
 
+                options = webdriver.FirefoxOptions()
+
+                if headless:
+                    options.add_argument("--headless")
+
+                return webdriver.Remote(
+                    command_executor=selenium_url,
+                    options=options
+                )
+
+            elif browser == "edge":
+
+                options = webdriver.EdgeOptions()
+                options.add_argument("--disable-notifications")
+
+                if headless:
+                    options.add_argument("--headless")
+
+                return webdriver.Remote(
+                    command_executor=selenium_url,
+                    options=options
+                )
+
+            else:
+                raise ValueError(
+                    f"Unsupported remote browser: {browser}"
+                )
+
+        # =========================
         # Local execution
+        # =========================
 
         if browser == "chrome":
+
             options = webdriver.ChromeOptions()
             options.add_argument("--start-maximized")
             options.add_argument("--disable-notifications")
@@ -42,6 +76,7 @@ class DriverFactory:
             driver = webdriver.Chrome(options=options)
 
         elif browser == "firefox":
+
             options = webdriver.FirefoxOptions()
             options.add_argument("--start-maximized")
 
@@ -51,6 +86,7 @@ class DriverFactory:
             driver = webdriver.Firefox(options=options)
 
         elif browser == "edge":
+
             options = webdriver.EdgeOptions()
             options.add_argument("--start-maximized")
             options.add_argument("--disable-notifications")
@@ -61,6 +97,8 @@ class DriverFactory:
             driver = webdriver.Edge(options=options)
 
         else:
-            raise ValueError(f"Unsupported browser: {browser}")
+            raise ValueError(
+                f"Unsupported browser: {browser}"
+            )
 
         return driver

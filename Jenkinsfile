@@ -1,6 +1,13 @@
 pipeline {
 
     agent any
+    parameters {
+    choice(
+        name: 'BROWSER',
+        choices: ['chrome', 'firefox'],
+        description: 'Browser to execute UI tests'
+    )
+}
 
     environment {
         TEST_PASSWORD = credentials('TEST_PASSWORD')
