@@ -68,10 +68,8 @@ services:
     depends_on:
       selenium-hub:
         condition: service_healthy
-
       chrome:
         condition: service_started
-
       firefox:
         condition: service_started
 
@@ -88,4 +86,3 @@ services:
     volumes:
       - ./allure-results:/app/allure-results
       - ./screenshots:/app/screenshots
-      - ./logs:/app/logs
