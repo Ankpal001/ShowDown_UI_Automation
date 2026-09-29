@@ -2,10 +2,23 @@ pipeline {
 
     agent any
     parameters {
+
     choice(
         name: 'BROWSER',
         choices: ['chrome', 'firefox'],
         description: 'Browser to execute UI tests'
+    )
+
+    choice(
+        name: 'ENVIRONMENT',
+        choices: ['qa', 'staging', 'prod'],
+        description: 'Environment to execute tests'
+    )
+
+    choice(
+        name: 'SUITE',
+        choices: ['smoke', 'regression'],
+        description: 'Test suite to execute'
     )
 }
 

@@ -2,7 +2,8 @@ from time import sleep
 
 from selenium.common.exceptions import (
     StaleElementReferenceException,
-    ElementNotInteractableException
+    ElementNotInteractableException,
+    ElementClickInterceptedException
 )
 
 from Config.settings import Settings
@@ -17,7 +18,8 @@ class RetryUtils:
         delay=None,
         exceptions=(
             StaleElementReferenceException,
-            ElementNotInteractableException
+            ElementNotInteractableException,
+            ElementClickInterceptedException
         )
     ):
         retries = retries if retries is not None else Settings.DEFAULT_RETRIES

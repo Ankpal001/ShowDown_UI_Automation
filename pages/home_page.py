@@ -11,7 +11,11 @@ class HomePage(BasePage):
         super().__init__(driver)
         self.header = HeaderComponent(self.driver)
 
+    def wait_until_loaded(self):
+        self.wait.wait_for_visibility(self.SEARCH_BOX)
+
     def search_product(self, product_name):
+        self.wait.wait_for_clickable(self.SEARCH_BOX)
         self.enter_text(self.SEARCH_BOX, product_name)
         self.click(self.SEARCH_BUTTON)
 

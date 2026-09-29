@@ -13,5 +13,5 @@ def test_search_product(driver, base_url, login_data, test_password):
     login_page.login(data["username"], test_password)
 
     home_page = HomePage(driver)
+    home_page.wait_until_loaded()
     home_page.search_product("MacBook")
-

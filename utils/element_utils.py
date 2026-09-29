@@ -1,23 +1,35 @@
+from selenium.common.exceptions import TimeoutException
 from utils.retry_utils import RetryUtils
+from utils.javascript_utils import JavaScriptUtils
+from selenium.common.exceptions import ElementClickInterceptedException
+
 
 class ElementUtils:
 
     def __init__(self, driver, wait):
         self.driver = driver
         self.wait = wait
+        self.js = JavaScriptUtils(driver)
 
     def click(self, locator):
+
         def action():
             element = self.wait.wait_for_clickable(locator)
             element.click()
 
-        RetryUtils.execute(
-            action,
-            retries=3,
-            delay=0.5
-        )
+        try:
+            RetryUtils.execute(
+                action,
+                retries=3,
+                delay=0.5
+            )
+
+        except ElementClickInterceptedException:
+            element = self.wait.wait_for_clickable(locator)
+            self.js.click_with_js(element)
 
     def enter_text(self, locator, value):
+
         def action():
             element = self.wait.wait_for_visibility(locator)
             element.clear()
@@ -33,13 +45,19 @@ class ElementUtils:
         return self.wait.wait_for_visibility(locator).text
 
     def is_displayed(self, locator):
-        return self.wait.wait_for_visibility(locator).is_displayed()
+        try:
+            element = self.wait.wait_for_visibility(locator)
+            return element.is_displayed()
+        except TimeoutException:
+            return False
 
     def is_enabled(self, locator):
-        return self.wait.wait_for_visibility(locator).is_enabled()
+        element = self.wait.wait_for_visibility(locator)
+        return element.is_enabled()
 
     def get_attribute(self, locator, attribute):
-        return self.wait.wait_for_visibility(locator).get_attribute(attribute)
+        element = self.wait.wait_for_visibility(locator)
+        return element.get_attribute(attribute)
 
     def get_elements(self, locator):
         return self.driver.find_elements(*locator)
