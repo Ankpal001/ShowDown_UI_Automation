@@ -78,7 +78,6 @@ services:
         "pytest",
         "-v",
         "-s",
-        "-n", "2",
         "--browser", "${BROWSER:-chrome}",
         "--headless",
         "--env", "qa"
