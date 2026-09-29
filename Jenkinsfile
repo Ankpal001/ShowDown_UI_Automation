@@ -41,6 +41,9 @@ pipeline {
             steps {
                 bat '''
                     docker compose down --remove-orphans
+                    set BROWSER=%BROWSER%
+                    set ENVIRONMENT=%ENVIRONMENT%
+                     set SUITE=%SUITE%
                     docker compose up --build --abort-on-container-exit --exit-code-from test-runner
                 '''
             }

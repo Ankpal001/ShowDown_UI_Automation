@@ -42,19 +42,24 @@ services:
       - SE_NODE_MAX_SESSIONS=1
 
   test-runner:
-    build: .
-
-    depends_on:
-      selenium-hub:
-        condition: service_healthy
-      chrome:
-        condition: service_started
-      firefox:
-        condition: service_started
+    build:
+      context: .
+      dockerfile: Dockerfile
 
     environment:
-      - SELENIUM_URL=http://selenium-hub:4444/wd/hub
-      - TEST_PASSWORD=${TEST_PASSWORD}
-      - BROWSER=${BROWSER:-chrome}
+      SELENIUM_URL: http://selenium-hub:4444/wd/hub
+      TEST_PASSWORD: ${TEST_PASSWORD}
+      BROWSER: ${BROWSER}
+      ENVIRONMENT: ${ENVIRONMENT}
+      SUITE: ${SUITE}
 
-    command: pytest -v -s -n 2 --browser ${BROWSER:-chrome} --headless
+    command: [
+    "pytest",
+    "-v",
+    "-s",
+    "-n", "2",
+    "--browser", "${BROWSER}",
+    "--env", "${ENVIRONMENT}",
+    "-m", "${SUITE}",
+    "--headless"
+  ]
