@@ -58,7 +58,9 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
+
     user: root
+
     environment:
       SELENIUM_URL: http://selenium-hub:4444/wd/hub
       TEST_PASSWORD: ${TEST_PASSWORD}
